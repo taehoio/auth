@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -12,11 +13,17 @@ type Setting struct {
 	GRPCServerPort     string
 	HTTPServerPort     string
 
+	Env                       string
+	GracefulShutdownTimeoutMs int
+
 	ShouldProfile bool
 	ShouldTrace   bool
 
-	Env                       string
-	GracefulShutdownTimeoutMs int
+	JWTHMACSecret           string
+	JWTIssuer               string
+	JWTAudience             string
+	AccessTokenExpiresInMs  int
+	RefreshTokenExpiresInMs int
 }
 
 func getEnv(key, defaultValue string) string {
@@ -52,10 +59,16 @@ func NewSetting() Setting {
 		GRPCServerPort:     getEnv("GRPC_SERVER_PORT", "18081"),
 		HTTPServerPort:     getEnv("HTTP_SERVER_PORT", "18082"),
 
+		Env:                       getEnv("ENV", "development"),
+		GracefulShutdownTimeoutMs: mustAtoi(getEnv("GRACEFUL_SHUTDOWN_TIMEOUT_MS", "5000")),
+
 		ShouldProfile: mustAtob(getEnv("SHOULD_PROFILE", "false")),
 		ShouldTrace:   mustAtob(getEnv("SHOULD_TRACE", "false")),
 
-		Env:                       getEnv("ENV", "development"),
-		GracefulShutdownTimeoutMs: mustAtoi(getEnv("GRACEFUL_SHUTDOWN_TIMEOUT_MS", "5000")),
+		JWTHMACSecret:           getEnv("JWT_HMAC_SECRET", ""),
+		JWTIssuer:               getEnv("JWT_ISSUER", "taeho.io"),
+		JWTAudience:             getEnv("JWT_AUDIENCE", "taeho.io"),
+		AccessTokenExpiresInMs:  mustAtoi(getEnv("ACCESS_TOKEN_EXPIRES_IN_MS", fmt.Sprintf("%d", 1000*60*15))),
+		RefreshTokenExpiresInMs: mustAtoi(getEnv("REFRESH_TOKEN_EXPIRES_IN_MS", fmt.Sprintf("%d", 1000*60*60*24*365))),
 	}
 }

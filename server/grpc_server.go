@@ -14,6 +14,8 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"github.com/taehoio/auth/config"
+	"github.com/taehoio/auth/internal/jwt"
+	"github.com/taehoio/auth/server/handler"
 	authv1 "github.com/taehoio/idl/gen/go/taehoio/idl/services/auth/v1"
 )
 
@@ -21,11 +23,17 @@ type AuthServiceServer struct {
 	authv1.AuthServiceServer
 
 	cfg config.Config
+	jwt *jwt.JWT
 }
 
 func NewAuthServiceServer(cfg config.Config) (*AuthServiceServer, error) {
 	return &AuthServiceServer{
 		cfg: cfg,
+		jwt: jwt.NewHS256JWT(
+			cfg.Setting().JWTHMACSecret,
+			cfg.Setting().JWTIssuer,
+			cfg.Setting().JWTAudience,
+		),
 	}, nil
 }
 
@@ -34,19 +42,11 @@ func (s *AuthServiceServer) HealthCheck(ctx context.Context, req *authv1.HealthC
 }
 
 func (s *AuthServiceServer) AuthByRefreshToken(ctx context.Context, req *authv1.AuthByRefreshTokenRequest) (*authv1.AuthByRefreshTokenResponse, error) {
-	return &authv1.AuthByRefreshTokenResponse{}, nil
-}
-
-func (s *AuthServiceServer) VerifyToken(ctx context.Context, req *authv1.VerifyTokenRequest) (*authv1.VerifyTokenResponse, error) {
-	return &authv1.VerifyTokenResponse{}, nil
-}
-
-func (s *AuthServiceServer) ParseToken(ctx context.Context, req *authv1.ParseTokenRequest) (*authv1.ParseTokenResponse, error) {
-	return &authv1.ParseTokenResponse{}, nil
+	return handler.AuthByRefreshTokenHandler(s.cfg, s.jwt)(ctx, req)
 }
 
 func (s *AuthServiceServer) Auth(ctx context.Context, req *authv1.AuthRequest) (*authv1.AuthResponse, error) {
-	return &authv1.AuthResponse{}, nil
+	return handler.Auth(s.cfg, s.jwt)(ctx, req)
 }
 
 func NewGRPCServer(cfg config.Config) (*grpc.Server, error) {
@@ -77,4 +77,8 @@ func NewGRPCServer(cfg config.Config) (*grpc.Server, error) {
 	reflection.Register(grpcServer)
 
 	return grpcServer, nil
+}
+
+func (s *AuthServiceServer) ParseToken(ctx context.Context, req *authv1.ParseTokenRequest) (*authv1.ParseTokenResponse, error) {
+	return &authv1.ParseTokenResponse{}, nil
 }
