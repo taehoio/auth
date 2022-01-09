@@ -1,5 +1,5 @@
 GOPATH:=$(shell go env GOPATH)
-APP?=apigateway
+APP?=auth
 
 .PHONY: build
 ## build: build the application(api)
