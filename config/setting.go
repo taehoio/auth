@@ -65,7 +65,7 @@ func NewSetting() Setting {
 		ShouldProfile: mustAtob(getEnv("SHOULD_PROFILE", "false")),
 		ShouldTrace:   mustAtob(getEnv("SHOULD_TRACE", "false")),
 
-		JWTHMACSecret:           getEnv("JWT_HMAC_SECRET", ""),
+		JWTHMACSecret:           getEnv("JWT_HMAC_SECRET", "PLEASE_SET_THIS_ENV_VAR"),
 		JWTIssuer:               getEnv("JWT_ISSUER", "taeho.io"),
 		JWTAudience:             getEnv("JWT_AUDIENCE", "taeho.io"),
 		AccessTokenExpiresInMs:  mustAtoi(getEnv("ACCESS_TOKEN_EXPIRES_IN_MS", fmt.Sprintf("%d", 1000*60*15))),

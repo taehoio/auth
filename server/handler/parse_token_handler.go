@@ -51,9 +51,9 @@ func parseToken(jwt *jwt.JWT, s string) (userv1.Provider, string, authv1.TokenTy
 		return userv1.Provider_PROVIDER_UNSPECIFIED, "", authv1.TokenType_TOKEN_TYPE_UNSPECIFIED, err
 	}
 
-	provider := claims["provider"].(userv1.Provider)
+	provider := userv1.Provider(claims["provider"].(float64))
 	identifier := claims["identifier"].(string)
-	tokenType := claims["token_type"].(authv1.TokenType)
+	tokenType := authv1.TokenType(claims["token_type"].(float64))
 
 	return provider, identifier, tokenType, nil
 }

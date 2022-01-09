@@ -79,7 +79,7 @@ func newToken(
 ) (string, error) {
 	claims := map[string]interface{}{
 		"provider":   provider,
-		"identifire": identifier,
+		"identifier": identifier,
 		"token_type": tokenType,
 	}
 	return jwt.Sign(expiresIn, claims)
