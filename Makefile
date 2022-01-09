@@ -1,15 +1,15 @@
 GOPATH:=$(shell go env GOPATH)
-APP?=apigateway
+APP?=auth
 
 .PHONY: build
-## build: build the application(api)
+## build: build the application
 build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags="-w -s" -o bin/${APP}.linux.amd64 cmd/main.go
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -installsuffix cgo -ldflags="-w -s" -o bin/${APP}.linux.arm64 cmd/main.go
 	CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-w -s" -o bin/${APP} cmd/main.go
 
 .PHONY: run
-## run: run the application(api)
+## run: run the application
 run:
 	go run -v -race cmd/main.go
 
