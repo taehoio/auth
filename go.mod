@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.2.0
-	github.com/golang/mock v1.6.0
 	github.com/taehoio/idl v0.0.0-20220109122601-3f390aa5c54e
 	go.opencensus.io v0.23.0
 	google.golang.org/grpc v1.43.0
