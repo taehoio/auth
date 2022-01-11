@@ -3,10 +3,11 @@ module github.com/taehoio/auth
 go 1.17
 
 require (
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.0.0
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/taehoio/idl v0.0.0-20220109122601-3f390aa5c54e
 	go.opentelemetry.io/otel v1.3.0
-	go.opentelemetry.io/otel/sdk v1.0.1
+	go.opentelemetry.io/otel/sdk v1.3.0
 	google.golang.org/grpc v1.43.0
 )
 
@@ -37,7 +38,6 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.2
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.0.0
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.2 // indirect

@@ -23,6 +23,7 @@ type AuthHandlerFunc func(ctx context.Context, req *authv1.AuthRequest) (*authv1
 
 func Auth(cfg config.Config, jwt *jwt.JWT) AuthHandlerFunc {
 	return func(ctx context.Context, req *authv1.AuthRequest) (*authv1.AuthResponse, error) {
+
 		if err := validateAuthRequest(req); err != nil {
 			return nil, err
 		}
